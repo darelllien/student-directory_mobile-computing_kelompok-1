@@ -26,6 +26,7 @@ class StudentDirectoryApp extends StatelessWidget {
           onPrimary: Colors.white,
         ),
         scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+        fontFamily: 'Roboto',
         useMaterial3: true,
       ),
       initialRoute: '/',
