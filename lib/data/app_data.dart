@@ -39,37 +39,65 @@ const List<String> domisiliList = [
   'Lainnya',
 ];
 
+const List<String> prodiList = [
+  'Teknik Informatika',
+  'Sistem Informasi',
+  'Teknik Komputer',
+  'Manajemen Informatika',
+  'Ilmu Komputer',
+  'Rekayasa Perangkat Lunak',
+  'Teknologi Informasi',
+  'Sains Data',
+  'Keamanan Siber',
+  'Multimedia',
+];
+
 List<Student> getInitialStudents() {
   final List<Map<String, String>> rawData = [
     {
+      'nim': '10123001',
       'name': 'Budi Santoso',
+      'prodi': 'Sains Data',
       'avatar': 'https://i.pravatar.cc/150?img=1',
       'domisili': 'Jakarta Selatan',
       'phone': '081234567890',
+      'email': 'budi@student.cakrawala.ac.id',
     },
     {
+      'nim': '10123002',
       'name': 'Sari Dewi',
+      'prodi': 'Informatika',
       'avatar': 'https://i.pravatar.cc/150?img=5',
       'domisili': 'Bekasi',
       'phone': '087654321098',
+      'email': 'sari@student.cakrawala.ac.id',
     },
     {
+      'nim': '10123003',
       'name': 'Ahmad Fauzi',
+      'prodi': 'Sains Data',
       'avatar': 'https://i.pravatar.cc/150?img=3',
       'domisili': 'Tangerang Selatan',
       'phone': '082198765432',
+      'email': 'ahmad@student.cakrawala.ac.id',
     },
     {
+      'nim': '10123004',
       'name': 'Rina Kusuma',
-      'avatar': 'https://i.pravatar.cc/150?img=8',
-      'domisili': 'Depok',
-      'phone': '089876543210',
+      'prodi': 'Sistem Informasi',
+      'avatar': 'https://i.pravatar.cc/150?img=11',
+      'domisili': 'Tangerang Selatan',
+      'phone': '085678901234',
+      'email': 'rina@student.cakrawala.ac.id',
     },
     {
+      'nim': '10123005',
       'name': 'Dian Pratama',
-      'avatar': 'https://i.pravatar.cc/150?img=11',
+      'prodi': 'Teknologi Informasi',
+      'avatar': 'https://i.pravatar.cc/150?img=8',
       'domisili': 'Bogor',
-      'phone': '085678901234',
+      'phone': '089876543210',
+      'email': 'dian@student.cakrawala.ac.id',
     },
   ];
 
@@ -78,10 +106,13 @@ List<Student> getInitialStudents() {
       id:
           DateTime.now().microsecondsSinceEpoch.toString() +
           Random().nextInt(1000).toString(),
+      nim: data['nim'] ?? '',
       name: data['name'] ?? '',
+      prodi: data['prodi'] ?? '',
       avatar: data['avatar'] ?? '',
       domisili: data['domisili'] ?? '',
       phone: data['phone'] ?? '',
+      email: data['email'] ?? '',
     );
   }).toList();
 }
