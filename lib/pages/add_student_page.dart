@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import '../data/app_data.dart';
 import '../models/student.dart';
+import '../theme/app_colors.dart';
 
 class AddStudentPage extends StatefulWidget {
   const AddStudentPage({super.key});
@@ -48,7 +49,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF0F172A),
+            color: AppColors.textPrimary,
             fontFamily: 'Roboto',
           ),
           children: isRequired
@@ -56,7 +57,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   TextSpan(
                     text: ' *',
                     style: TextStyle(
-                      color: Color(0xFFFF4D4D),
+                      color: AppColors.negative,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -89,7 +90,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
           content: Text(
             'Validasi gagal! Periksa kembali field bertanda merah (*)',
           ),
-          backgroundColor: Color(0xFFFF4D4D),
+          backgroundColor: AppColors.negative,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -104,31 +105,34 @@ class _AddStudentPageState extends State<AddStudentPage> {
     }) {
       return InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
-        prefixIcon: Icon(icon, color: const Color(0xFF487EFD), size: 20),
+        hintStyle: const TextStyle(
+          color: AppColors.disabledBackground,
+          fontSize: 14,
+        ),
+        prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
         prefixIconConstraints: const BoxConstraints(minWidth: 36, minHeight: 0),
         contentPadding: const EdgeInsets.symmetric(vertical: 10),
         filled: false,
         enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFE2E8F0), width: 1.5),
+          borderSide: BorderSide(color: AppColors.iconBackground, width: 1.5),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF0347E4), width: 2.0),
+          borderSide: BorderSide(color: AppColors.secondary, width: 2.0),
         ),
         errorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFFF4D4D), width: 1.5),
+          borderSide: BorderSide(color: AppColors.negative, width: 1.5),
         ),
         focusedErrorBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFFF4D4D), width: 2.0),
+          borderSide: BorderSide(color: AppColors.negative, width: 2.0),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF487EFD),
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.surface,
         elevation: 0,
         centerTitle: false,
         title: const Text(
@@ -155,10 +159,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: const Color(0xFF487EFD),
-                        width: 3,
-                      ),
+                      border: Border.all(color: AppColors.primary, width: 3),
                     ),
                     child: ClipOval(
                       child: _assignedAvatar != null
@@ -174,18 +175,18 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                         height: 24,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2.5,
-                                          color: Color(0xFF487EFD),
+                                          color: AppColors.primary,
                                         ),
                                       ),
                                     );
                                   },
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
-                                  color: const Color(0xFFE2E8F0),
+                                  color: AppColors.iconBackground,
                                   child: const Icon(
                                     Icons.person,
                                     size: 44,
-                                    color: Color(0xFF94A3B8),
+                                    color: AppColors.disabledBackground,
                                   ),
                                 );
                               },
@@ -194,14 +195,13 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 12),
                 _buildFieldLabel('Nama Lengkap', true),
                 TextFormField(
                   controller: _nameController,
                   keyboardType: TextInputType.name,
                   style: const TextStyle(
-                    color: Color(0xFF0F172A),
+                    color: AppColors.textPrimary,
                     fontSize: 15,
                   ),
                   decoration: buildUnderlineDecoration(
@@ -234,7 +234,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             style: const TextStyle(
-                              color: Color(0xFF0F172A),
+                              color: AppColors.textPrimary,
                               fontSize: 15,
                             ),
                             decoration: buildUnderlineDecoration(
@@ -274,7 +274,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                             onChanged: (value) =>
                                 setState(() => _selectedProdi = value),
                             style: const TextStyle(
-                              color: Color(0xFF0F172A),
+                              color: AppColors.textPrimary,
                               fontFamily: 'Roboto',
                             ),
                             isDense: true,
@@ -310,7 +310,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   onChanged: (value) =>
                       setState(() => _selectedDomisili = value),
                   style: const TextStyle(
-                    color: Color(0xFF0F172A),
+                    color: AppColors.textPrimary,
                     fontFamily: 'Roboto',
                   ),
                   decoration: buildUnderlineDecoration(
@@ -332,7 +332,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             style: const TextStyle(
-                              color: Color(0xFF0F172A),
+                              color: AppColors.textPrimary,
                               fontSize: 15,
                             ),
                             decoration: buildUnderlineDecoration(
@@ -368,7 +368,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             style: const TextStyle(
-                              color: Color(0xFF0F172A),
+                              color: AppColors.textPrimary,
                               fontSize: 15,
                             ),
                             decoration: buildUnderlineDecoration(
@@ -397,12 +397,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: _isConsentChecked
-                          ? const Color(0xFF0347E4)
-                          : const Color(0xFFE2E8F0),
+                          ? AppColors.secondary
+                          : AppColors.iconBackground,
                       width: _isConsentChecked ? 1.5 : 1.0,
                     ),
                   ),
@@ -410,7 +410,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     children: [
                       Checkbox(
                         value: _isConsentChecked,
-                        activeColor: const Color(0xFF487EFD),
+                        activeColor: AppColors.primary,
                         onChanged: (bool? value) {
                           setState(() {
                             _isConsentChecked = value ?? false;
@@ -422,7 +422,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                           'Saya menyatakan bahwa data yang saya masukkan adalah benar.',
                           style: TextStyle(
                             fontSize: 13,
-                            color: Color(0xFF475569),
+                            color: AppColors.textPrimary,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -437,8 +437,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   child: ElevatedButton(
                     onPressed: _isConsentChecked ? _submitForm : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF487EFD),
-                      disabledBackgroundColor: const Color(0xFFCBD5E1),
+                      backgroundColor: AppColors.primary,
+                      disabledBackgroundColor: AppColors.disabledBackground,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -450,8 +450,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: _isConsentChecked
-                            ? Colors.white
-                            : const Color(0xFF94A3B8),
+                            ? AppColors.surface
+                            : AppColors.disabledText,
                       ),
                     ),
                   ),
