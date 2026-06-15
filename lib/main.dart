@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/add_student_page.dart';
 import 'pages/profile_page.dart';
+import 'theme/app_colors.dart';
 
 void main() {
   runApp(const StudentDirectoryApp());
@@ -18,14 +19,14 @@ class StudentDirectoryApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF487EFD),
+          seedColor: AppColors.primary,
           brightness: Brightness.light,
-          primary: const Color(0xFF487EFD),
-          secondary: const Color(0xFF0347E4),
-          surface: const Color(0xFFF8F9FA),
-          onPrimary: Colors.white,
+          primary: AppColors.primary,
+          secondary: AppColors.secondary,
+          surface: AppColors.background,
+          onPrimary: AppColors.surface,
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+        scaffoldBackgroundColor: AppColors.background,
         fontFamily: 'Roboto',
         useMaterial3: true,
       ),
