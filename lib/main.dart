@@ -28,7 +28,7 @@ class StudentDirectoryApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFF5F6FA),
         useMaterial3: true,
       ),
-      initialRoute: '/',
+      initialRoute: '/add',
       routes: {
         '/': (context) => HomePage(),
         '/add': (context) => AddStudentPage(),
