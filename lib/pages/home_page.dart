@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
       } else {
         _filteredStudents = _allStudents
             .where((student) =>
-        // Cek apakah NAMA atau NIM mengandung teks yang dicari
         student.name.toLowerCase().contains(query.toLowerCase()) ||
             student.nim.toLowerCase().contains(query.toLowerCase()))
             .toList();
@@ -47,15 +46,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Changed title here
-        title: const Text('Daftar Mahasiswa'),
+        title: const Text(
+          'Daftar Mahasiswa',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
       body: Column(
         children: [
-          // Updated Search Bar with Shadow
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Container(
@@ -63,10 +63,10 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1), // Subtle shadow color
+                    color: Colors.black.withOpacity(0.1),
                     spreadRadius: 1,
-                    blurRadius: 8, // How soft the shadow is
-                    offset: const Offset(0, 3), // Moves the shadow down slightly
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none, // Hides the harsh default line so the shadow pops
+                    borderSide: BorderSide.none,
                   ),
                   filled: true,
                   fillColor: Colors.white,
@@ -86,8 +86,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
-          // ... The rest of your Expanded GridView goes here exactly as before
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -96,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  childAspectRatio: 0.80, // Sedikit diperkecil karena ketambahan baris NIM
+                  childAspectRatio: 0.80,
                 ),
                 itemCount: _filteredStudents.length,
                 itemBuilder: (context, index) {
@@ -149,7 +147,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            // Nama Mahasiswa
                             Text(
                               student.name,
                               style: const TextStyle(
@@ -161,12 +158,11 @@ class _HomePageState extends State<HomePage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 2),
-                            // NIM Mahasiswa (Tambahan Baru)
                             Text(
                               student.nim,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF487EFD), // Diwarnai primary agar stand-out
+                                color: Color(0xFF487EFD),
                                 fontSize: 13,
                               ),
                               textAlign: TextAlign.center,
@@ -174,7 +170,6 @@ class _HomePageState extends State<HomePage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 2),
-                            // Domisili Mahasiswa
                             Text(
                               student.domisili,
                               style: TextStyle(
@@ -210,7 +205,6 @@ class _HomePageState extends State<HomePage> {
             );
           }
         },
-        // Warna tombol disamakan dengan primary color
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.person_add, color: Colors.white),
       ),
