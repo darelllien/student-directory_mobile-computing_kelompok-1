@@ -70,6 +70,12 @@ class _AddStudentPageState extends State<AddStudentPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      String cleanPhone = _phoneController.text.trim();
+      if (cleanPhone.startsWith('0')) {
+        cleanPhone = cleanPhone.substring(1);
+      }
+      final formattedPhone = '+62$cleanPhone';
+
       final newStudent = Student(
         id:
             DateTime.now().microsecondsSinceEpoch.toString() +
@@ -79,7 +85,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
         prodi: _selectedProdi ?? '',
         domisili: _selectedDomisili ?? '',
         email: _emailController.text.trim(),
-        phone: _phoneController.text.trim(),
+        phone: formattedPhone,
         avatar: _assignedAvatar ?? '',
       );
 
@@ -254,7 +260,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,12 +268,14 @@ class _AddStudentPageState extends State<AddStudentPage> {
                           _buildFieldLabel('Prodi/Jurusan', true),
                           DropdownButtonFormField<String>(
                             initialValue: _selectedProdi,
+                            isExpanded: true,
                             items: prodiList.map((prodi) {
                               return DropdownMenuItem(
                                 value: prodi,
                                 child: Text(
                                   prodi,
-                                  style: const TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 13),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               );
                             }).toList(),
@@ -333,7 +341,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                             keyboardType: TextInputType.emailAddress,
                             style: const TextStyle(
                               color: AppColors.textPrimary,
-                              fontSize: 15,
+                              fontSize: 14,
                             ),
                             decoration: buildUnderlineDecoration(
                               hintText: 'Masukkan Email',
@@ -354,7 +362,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,18 +377,34 @@ class _AddStudentPageState extends State<AddStudentPage> {
                             ],
                             style: const TextStyle(
                               color: AppColors.textPrimary,
-                              fontSize: 15,
+                              fontSize: 14,
                             ),
-                            decoration: buildUnderlineDecoration(
-                              hintText: 'Masukkan Nomor',
-                              icon: Icons.phone_android_outlined,
-                            ).copyWith(counterText: ""),
+                            decoration:
+                                buildUnderlineDecoration(
+                                  hintText: '812xxxxxxxxx',
+                                  icon: Icons.phone_android_outlined,
+                                ).copyWith(
+                                  counterText: "",
+                                  prefixText: '+62 ',
+                                  prefixStyle: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
+                                ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Nomor HP wajib diisi!';
                               }
-                              if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                                return 'Nomor HP harus berupa angka!';
+
+                              String cleanPhone = value.trim();
+                              if (cleanPhone.startsWith('0')) {
+                                cleanPhone = cleanPhone.substring(1);
+                              }
+
+                              if (cleanPhone.length < 9 ||
+                                  cleanPhone.length > 12) {
+                                return 'Nomor HP harus terdiri dari 10-13 digit!';
                               }
                               return null;
                             },

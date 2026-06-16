@@ -40,16 +40,22 @@ const List<String> domisiliList = [
 ];
 
 const List<String> prodiList = [
-  'Teknik Informatika',
-  'Sistem Informasi',
-  'Teknik Komputer',
-  'Manajemen Informatika',
+  'Bisnis Digital',
+  'Keuangan dan Investasi',
+  'Manajemen',
+  'Akuntansi',
   'Ilmu Komputer',
-  'Rekayasa Perangkat Lunak',
-  'Teknologi Informasi',
   'Sains Data',
-  'Keamanan Siber',
-  'Multimedia',
+  'Sistem Informasi',
+  'Artificial Intelligence',
+  'Ilmu Komunikasi',
+  'Desain Komunikasi Visual',
+  'Psikologi',
+  'PGSD',
+  'Ilmu Hukum',
+  'Teknik Elektro',
+  'Teknik Industri',
+  'Teknik Lingkungan & Rekayasa Berkelanjutan',
 ];
 
 List<Student> getInitialStudents() {

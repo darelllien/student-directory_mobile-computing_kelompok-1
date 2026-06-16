@@ -31,8 +31,10 @@ class _HomePageState extends State<HomePage> {
         _filteredStudents = List.from(_allStudents);
       } else {
         _filteredStudents = _allStudents
-            .where((student) =>
-            student.name.toLowerCase().contains(query.toLowerCase()))
+            .where(
+              (student) =>
+                  student.name.toLowerCase().contains(query.toLowerCase()),
+            )
             .toList();
       }
     });
@@ -40,7 +42,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _searchController.dispose(); // Always dispose controllers to prevent memory leaks
+    _searchController
+        .dispose(); // Always dispose controllers to prevent memory leaks
     super.dispose();
   }
 
@@ -84,7 +87,8 @@ class _HomePageState extends State<HomePage> {
                   mainAxisSpacing: 10,
                   childAspectRatio: 0.85,
                 ),
-                itemCount: _filteredStudents.length, // Read from the filtered list
+                itemCount:
+                    _filteredStudents.length, // Read from the filtered list
                 itemBuilder: (context, index) {
                   final student = _filteredStudents[index];
                   return Card(
@@ -108,10 +112,15 @@ class _HomePageState extends State<HomePage> {
                           setState(() {
                             // 5. Delete by ID instead of Index, so it deletes the right person even if searched
                             _allStudents.removeWhere((s) => s.id == student.id);
-                            _filterStudents(_searchController.text); // Refresh search results
+                            _filterStudents(
+                              _searchController.text,
+                            ); // Refresh search results
                           });
+                          // ignore: use_build_context_synchronously
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Mahasiswa berhasil dihapus')),
+                            const SnackBar(
+                              content: Text('Mahasiswa berhasil dihapus'),
+                            ),
                           );
                         }
                       },
@@ -121,14 +130,16 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              width: 80, // Matches the old radius of 40 (40 * 2 = 80)
+                              width:
+                                  80, // Matches the old radius of 40 (40 * 2 = 80)
                               height: 80,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   // Uses your primary theme color with a bit of transparency for a clean look
                                   color: Colors.black,
-                                  width: 3.0, // Adjust this number to make the border thicker or thinner
+                                  width:
+                                      3.0, // Adjust this number to make the border thicker or thinner
                                 ),
                                 image: DecorationImage(
                                   image: NetworkImage(student.avatar),
@@ -176,8 +187,11 @@ class _HomePageState extends State<HomePage> {
           if (result != null && result is Student) {
             setState(() {
               _allStudents.add(result);
-              _filterStudents(_searchController.text); // Refresh search results to include new student
+              _filterStudents(
+                _searchController.text,
+              ); // Refresh search results to include new student
             });
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Mahasiswa berhasil ditambahkan')),
             );
