@@ -30,7 +30,7 @@ class StudentDirectoryApp extends StatelessWidget {
         fontFamily: 'Roboto',
         useMaterial3: true,
       ),
-      initialRoute: '/add',
+      initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
         '/add': (context) => AddStudentPage(),
