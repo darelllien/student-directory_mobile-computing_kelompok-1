@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    // Baris kotlin-android lama sudah dihapus agar tidak bentrok dengan versi Flutter masa depan
+    id("org.jetbrains.kotlin.android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
