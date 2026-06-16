@@ -24,6 +24,8 @@ class _AddStudentPageState extends State<AddStudentPage> {
   String? _selectedDomisili;
   String? _assignedAvatar;
   bool _isConsentChecked = false;
+  String _selectedCountryCode = '+62';
+  String? _phoneErrorText;
 
   @override
   void initState() {
@@ -74,7 +76,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
       if (cleanPhone.startsWith('0')) {
         cleanPhone = cleanPhone.substring(1);
       }
-      final formattedPhone = '+62$cleanPhone';
+      final formattedPhone = '$_selectedCountryCode$cleanPhone';
 
       final newStudent = Student(
         id:
@@ -368,46 +370,147 @@ class _AddStudentPageState extends State<AddStudentPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildFieldLabel('Nomer Handphone', true),
-                          TextFormField(
-                            controller: _phoneController,
-                            keyboardType: TextInputType.number,
-                            maxLength: 13,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            style: const TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 14,
+                          InputDecorator(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 4,
+                              ),
+                              filled: false,
+                              errorText: _phoneErrorText,
+                              errorStyle: const TextStyle(
+                                color: AppColors.negative,
+                                fontSize: 12,
+                              ),
+                              enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.iconBackground,
+                                  width: 1.5,
+                                ),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.secondary,
+                                  width: 2.0,
+                                ),
+                              ),
+                              errorBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.negative,
+                                  width: 1.5,
+                                ),
+                              ),
+                              focusedErrorBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: AppColors.negative,
+                                  width: 2.0,
+                                ),
+                              ),
                             ),
-                            decoration:
-                                buildUnderlineDecoration(
-                                  hintText: '812xxxxxxxxx',
-                                  icon: Icons.phone_android_outlined,
-                                ).copyWith(
-                                  counterText: "",
-                                  prefixText: '+62 ',
-                                  prefixStyle: const TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: _selectedCountryCode,
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down,
+                                      size: 18,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    style: const TextStyle(
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      fontFamily: 'Roboto',
+                                    ),
+                                    alignment: Alignment.center,
+                                    items: countryCodesMap.keys.map((code) {
+                                      return DropdownMenuItem(
+                                        value: code,
+                                        child: Text(
+                                          countryCodesMap[code]!,
+                                          style: const TextStyle(fontSize: 15),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          _selectedCountryCode = value;
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Nomor HP wajib diisi!';
-                              }
-
-                              String cleanPhone = value.trim();
-                              if (cleanPhone.startsWith('0')) {
-                                cleanPhone = cleanPhone.substring(1);
-                              }
-
-                              if (cleanPhone.length < 9 ||
-                                  cleanPhone.length > 12) {
-                                return 'Nomor HP harus terdiri dari 10-13 digit!';
-                              }
-                              return null;
-                            },
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0,
+                                  ),
+                                  child: Text(
+                                    '|',
+                                    style: TextStyle(
+                                      color: AppColors.iconBackground,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _phoneController,
+                                    keyboardType: TextInputType.number,
+                                    maxLength: 13,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                    style: const TextStyle(
+                                      color: AppColors.textPrimary,
+                                      fontSize: 15,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      hintText: '812xxxxxxxxx',
+                                      hintStyle: TextStyle(
+                                        color: AppColors.disabledBackground,
+                                        fontSize: 14,
+                                      ),
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10,
+                                      ),
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      focusedErrorBorder: InputBorder.none,
+                                      counterText: "",
+                                      errorStyle: TextStyle(
+                                        height: 0,
+                                        fontSize: 0,
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      String? errorMessage;
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
+                                        errorMessage = 'Nomor HP wajib diisi!';
+                                      } else {
+                                        String cleanPhone = value.trim();
+                                        if (cleanPhone.length < 9 ||
+                                            cleanPhone.length > 12) {
+                                          errorMessage =
+                                              'Nomor HP tidak valid!';
+                                        }
+                                      }
+                                      if (_phoneErrorText != errorMessage) {
+                                        setState(() {
+                                          _phoneErrorText = errorMessage;
+                                        });
+                                      }
+                                      return errorMessage != null ? "" : null;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

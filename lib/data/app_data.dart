@@ -58,6 +58,24 @@ const List<String> prodiList = [
   'Teknik Lingkungan & Rekayasa Berkelanjutan',
 ];
 
+const Map<String, String> countryCodesMap = {
+  '+62': '🇮🇩 +62',
+  '+1': '🇺🇸 +1',
+  '+60': '🇲🇾 +60',
+  '+65': '🇸🇬 +65',
+  '+61': '🇦🇺 +61',
+  '+91': '🇮🇳 +91',
+  '+81': '🇯🇵 +81',
+  '+82': '🇰🇷 +82',
+  '+86': '🇨🇳 +86',
+  '+44': '🇬🇧 +44',
+  '+49': '🇩🇪 +49',
+  '+33': '🇫🇷 +33',
+  '+31': '🇳🇱 +31',
+  '+966': '🇸🇦 +966',
+  '+971': '🇦🇪 +971',
+};
+
 List<Student> getInitialStudents() {
   final List<Map<String, String>> rawData = [
     {
