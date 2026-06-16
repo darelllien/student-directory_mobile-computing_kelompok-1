@@ -13,7 +13,6 @@ class ProfilePage extends StatelessWidget {
     final Student? student = args?['student'] as Student?;
     final int totalStudents = args?['totalStudents'] as int? ?? 0;
 
-    // Minimal 3 mahasiswa agar tombol hapus aktif
     final bool canDelete = totalStudents > 3;
 
     if (student == null) {
@@ -26,54 +25,26 @@ class ProfilePage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background, // Netral
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(AppStrings.profileTitle),
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.secondary,
         foregroundColor: AppColors.surface,
         elevation: 0,
+        centerTitle: false,
+        title: const Text(
+          AppStrings.profileTitle,
+          style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.5),
+        ),
       ),
       body: Stack(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 220,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(16),
-                ),
-              ),
-            ),
-          ),
+          const _ProfileHeaderBackground(),
           SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 20),
-                // Foto Avatar
-                Center(
-                  child: Hero(
-                    tag: 'avatar_${student.id}',
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.surface, width: 3),
-                        image: DecorationImage(
-                          image: NetworkImage(student.avatar),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _ProfileAvatar(student: student),
                 const SizedBox(height: 12),
-                // Nama Mahasiswa
                 Text(
                   student.name,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -82,83 +53,9 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Kartu Informasi
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.border,
-                        width: 1.5,
-                      ), // Garis luar seperti di mockup
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        _buildInfoRow(
-                          icon: Icons.person_outline,
-                          label: AppStrings.labelFullName,
-                          value: student.name,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.badge_outlined,
-                          label: AppStrings.labelId,
-                          value: student.id,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.location_on_outlined,
-                          label: AppStrings.labelDomicile,
-                          value: student.domisili,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.phone_outlined,
-                          label: AppStrings.labelPhone,
-                          value: student.phone,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                _StudentInfoCard(student: student),
                 const SizedBox(height: 24),
-                // Tombol Hapus
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: canDelete
-                          ? () => _showDeleteDialog(context)
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.negative,
-                        foregroundColor: AppColors.surface,
-                        disabledBackgroundColor: AppColors.disabledBackground,
-                        disabledForegroundColor: AppColors.disabledText,
-                        side: const BorderSide(
-                          color: AppColors.textPrimary,
-                          width: 1.5,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      icon: const Icon(Icons.delete_outline),
-                      label: const Text(
-                        AppStrings.btnDeleteAccount,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _DeleteAccountButton(canDelete: canDelete),
                 const SizedBox(height: 32),
               ],
             ),
@@ -167,114 +64,127 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _showDeleteDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (ctx) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(
-            color: AppColors.border,
-            width: 1.5,
-          ),
+class _ProfileHeaderBackground extends StatelessWidget {
+  const _ProfileHeaderBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 220,
+      child: Container(
+        decoration: const BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Ikon bulat di dialog
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.border,
-                    width: 1.5,
-                  ),
-                ),
-                child: const Icon(
-                  Icons.warning_amber_rounded,
-                  size: 40,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                AppStrings.dialogDeleteConfirm,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.negative,
-                        foregroundColor: AppColors.surface,
-                        side: const BorderSide(
-                          color: AppColors.border,
-                          width: 1.5,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      icon: const Icon(Icons.delete, size: 18),
-                      label: const Text(
-                        AppStrings.btnDelete,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(ctx); // Tutup dialog
-                        Navigator.pop(context, true); // Kembali dengan flag true
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.surface,
-                        foregroundColor: AppColors.textPrimary,
-                        side: const BorderSide(
-                          color: AppColors.border,
-                          width: 1.5,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onPressed: () => Navigator.pop(ctx), // Batal
-                      child: const Text(
-                        AppStrings.btnCancel,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      ),
+    );
+  }
+}
+
+class _ProfileAvatar extends StatelessWidget {
+  final Student student;
+  const _ProfileAvatar({required this.student});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Hero(
+        tag: 'avatar_${student.id}',
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.surface, width: 3),
+            image: DecorationImage(
+              image: NetworkImage(student.avatar),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
+class _StudentInfoCard extends StatelessWidget {
+  final Student student;
+  const _StudentInfoCard({required this.student});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.border, width: 1.5),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _InfoRow(
+              icon: Icons.person_outline,
+              label: AppStrings.labelFullName,
+              value: student.name,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.badge_outlined,
+              label: AppStrings.labelId,
+              value: student.nim,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.school_outlined,
+              label: AppStrings.labelMajor,
+              value: student.prodi,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.location_on_outlined,
+              label: AppStrings.labelDomicile,
+              value: student.domisili,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.phone_outlined,
+              label: AppStrings.labelPhone,
+              value: student.phone,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.email_outlined,
+              label: AppStrings.labelEmail,
+              value: student.email,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _InfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -283,10 +193,7 @@ class ProfilePage extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: AppColors.border,
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.border, width: 1),
           ),
           child: Icon(icon, color: AppColors.primary, size: 20),
         ),
@@ -316,6 +223,136 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _DeleteAccountButton extends StatelessWidget {
+  final bool canDelete;
+  const _DeleteAccountButton({required this.canDelete});
+
+  void _showDeleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: AppColors.border, width: 1.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.negative, width: 1.5),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Icon(
+                    Icons.warning_amber_rounded,
+                    size: 40,
+                    color: AppColors.negative,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                AppStrings.dialogDeleteConfirm,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.negative,
+                        foregroundColor: AppColors.surface,
+                        side: const BorderSide(
+                          color: AppColors.border,
+                          width: 1.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      icon: const Icon(Icons.delete, size: 18),
+                      label: const Text(
+                        AppStrings.btnDelete,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        Navigator.pop(context, true);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.surface,
+                        foregroundColor: AppColors.textPrimary,
+                        side: const BorderSide(
+                          color: AppColors.border,
+                          width: 1.5,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      onPressed: () => Navigator.pop(ctx),
+                      child: const Text(
+                        AppStrings.btnCancel,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: canDelete ? () => _showDeleteDialog(context) : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.negative,
+            foregroundColor: AppColors.surface,
+            disabledBackgroundColor: AppColors.disabledBackground,
+            disabledForegroundColor: AppColors.disabledText,
+            side: const BorderSide(color: AppColors.textPrimary, width: 1.5),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          icon: const Icon(Icons.delete_outline),
+          label: const Text(
+            AppStrings.btnDeleteAccount,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
     );
   }
 }
