@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     spreadRadius: 1,
                     blurRadius: 8,
                     offset: const Offset(0, 3),
@@ -116,7 +116,9 @@ class _HomePageState extends State<HomePage> {
                           },
                         );
 
-                        if (result == 'delete') {
+                        if (!context.mounted) return;
+
+                        if (result == true) {
                           setState(() {
                             _allStudents.removeWhere((s) => s.id == student.id);
                             _filterStudents(_searchController.text);
@@ -194,6 +196,8 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await Navigator.pushNamed(context, '/add');
+
+          if (!context.mounted) return;
 
           if (result != null && result is Student) {
             setState(() {
