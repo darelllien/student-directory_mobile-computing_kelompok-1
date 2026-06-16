@@ -10,21 +10,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // 1. Maintain a master list and a filtered list for the search bar
   List<Student> _allStudents = [];
   List<Student> _filteredStudents = [];
 
-  // 2. Controller to read the text inside the search bar
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _allStudents = getInitialStudents();
-    _filteredStudents = List.from(_allStudents); // Initially, show everyone
+    _filteredStudents = List.from(_allStudents);
   }
 
-  // 3. Search function to filter students by name
   void _filterStudents(String query) {
     setState(() {
       if (query.isEmpty) {
@@ -32,7 +29,9 @@ class _HomePageState extends State<HomePage> {
       } else {
         _filteredStudents = _allStudents
             .where((student) =>
-            student.name.toLowerCase().contains(query.toLowerCase()))
+        // Cek apakah NAMA atau NIM mengandung teks yang dicari
+        student.name.toLowerCase().contains(query.toLowerCase()) ||
+            student.nim.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -40,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _searchController.dispose(); // Always dispose controllers to prevent memory leaks
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -48,32 +47,47 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // Changed title here
         title: const Text('Daftar Mahasiswa'),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
-      // 4. Wrap everything in a Column to stack the Search Bar above the Grid
       body: Column(
         children: [
-          // Search Bar UI
+          // Updated Search Bar with Shadow
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _filterStudents, // Trigger search on every keystroke
-              decoration: InputDecoration(
-                labelText: 'Cari Mahasiswa...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1), // Subtle shadow color
+                    spreadRadius: 1,
+                    blurRadius: 8, // How soft the shadow is
+                    offset: const Offset(0, 3), // Moves the shadow down slightly
+                  ),
+                ],
+              ),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterStudents,
+                decoration: InputDecoration(
+                  labelText: 'Cari Nama atau NIM...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none, // Hides the harsh default line so the shadow pops
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
                 ),
-                filled: true,
-                fillColor: Colors.white,
               ),
             ),
           ),
-          // Grid View wrapped in Expanded so it takes up the remaining screen space
+
+          // ... The rest of your Expanded GridView goes here exactly as before
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -82,9 +96,9 @@ class _HomePageState extends State<HomePage> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  childAspectRatio: 0.85,
+                  childAspectRatio: 0.80, // Sedikit diperkecil karena ketambahan baris NIM
                 ),
-                itemCount: _filteredStudents.length, // Read from the filtered list
+                itemCount: _filteredStudents.length,
                 itemBuilder: (context, index) {
                   final student = _filteredStudents[index];
                   return Card(
@@ -106,9 +120,8 @@ class _HomePageState extends State<HomePage> {
 
                         if (result == 'delete') {
                           setState(() {
-                            // 5. Delete by ID instead of Index, so it deletes the right person even if searched
                             _allStudents.removeWhere((s) => s.id == student.id);
-                            _filterStudents(_searchController.text); // Refresh search results
+                            _filterStudents(_searchController.text);
                           });
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Mahasiswa berhasil dihapus')),
@@ -121,14 +134,13 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              width: 80, // Matches the old radius of 40 (40 * 2 = 80)
+                              width: 80,
                               height: 80,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  // Uses your primary theme color with a bit of transparency for a clean look
                                   color: Colors.black,
-                                  width: 3.0, // Adjust this number to make the border thicker or thinner
+                                  width: 4.0,
                                 ),
                                 image: DecorationImage(
                                   image: NetworkImage(student.avatar),
@@ -136,23 +148,38 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 10),
+                            // Nama Mahasiswa
                             Text(
                               student.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 15,
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 2),
+                            // NIM Mahasiswa (Tambahan Baru)
+                            Text(
+                              student.nim,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF487EFD), // Diwarnai primary agar stand-out
+                                fontSize: 13,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            // Domisili Mahasiswa
                             Text(
                               student.domisili,
                               style: TextStyle(
                                 color: Colors.grey[700],
-                                fontSize: 14,
+                                fontSize: 12,
                               ),
                               textAlign: TextAlign.center,
                               maxLines: 1,
@@ -176,15 +203,15 @@ class _HomePageState extends State<HomePage> {
           if (result != null && result is Student) {
             setState(() {
               _allStudents.add(result);
-              _filterStudents(_searchController.text); // Refresh search results to include new student
+              _filterStudents(_searchController.text);
             });
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Mahasiswa berhasil ditambahkan')),
             );
           }
         },
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        // 6. Replaced Icons.add with Icons.person_add to match your image
+        // Warna tombol disamakan dengan primary color
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: const Icon(Icons.person_add, color: Colors.white),
       ),
     );
