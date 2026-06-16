@@ -13,7 +13,6 @@ class ProfilePage extends StatelessWidget {
     final Student? student = args?['student'] as Student?;
     final int totalStudents = args?['totalStudents'] as int? ?? 0;
 
-    // Minimal 3 mahasiswa agar tombol hapus aktif
     final bool canDelete = totalStudents > 3;
 
     if (student == null) {
@@ -39,45 +38,13 @@ class ProfilePage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 220,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(16),
-                ),
-              ),
-            ),
-          ),
+          const _ProfileHeaderBackground(),
           SingleChildScrollView(
             child: Column(
               children: [
                 const SizedBox(height: 20),
-                // Foto Avatar
-                Center(
-                  child: Hero(
-                    tag: 'avatar_${student.id}',
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.surface, width: 3),
-                        image: DecorationImage(
-                          image: NetworkImage(student.avatar),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _ProfileAvatar(student: student),
                 const SizedBox(height: 12),
-                // Nama Mahasiswa
                 Text(
                   student.name,
                   style: theme.textTheme.titleLarge?.copyWith(
@@ -86,95 +53,9 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Kartu Informasi
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.border,
-                        width: 1.5,
-                      ), // Garis luar seperti di mockup
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        _buildInfoRow(
-                          icon: Icons.person_outline,
-                          label: AppStrings.labelFullName,
-                          value: student.name,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.badge_outlined,
-                          label: AppStrings.labelId,
-                          value: student.nim,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.school_outlined,
-                          label: AppStrings.labelMajor,
-                          value: student.prodi,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.location_on_outlined,
-                          label: AppStrings.labelDomicile,
-                          value: student.domisili,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.phone_outlined,
-                          label: AppStrings.labelPhone,
-                          value: student.phone,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildInfoRow(
-                          icon: Icons.email_outlined,
-                          label: AppStrings.labelEmail,
-                          value: student.email,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                _StudentInfoCard(student: student),
                 const SizedBox(height: 24),
-                // Tombol Hapus
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: canDelete
-                          ? () => _showDeleteDialog(context)
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.negative,
-                        foregroundColor: AppColors.surface,
-                        disabledBackgroundColor: AppColors.disabledBackground,
-                        disabledForegroundColor: AppColors.disabledText,
-                        side: const BorderSide(
-                          color: AppColors.textPrimary,
-                          width: 1.5,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      icon: const Icon(Icons.delete_outline),
-                      label: const Text(
-                        AppStrings.btnDeleteAccount,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _DeleteAccountButton(canDelete: canDelete),
                 const SizedBox(height: 32),
               ],
             ),
@@ -183,6 +64,172 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ProfileHeaderBackground extends StatelessWidget {
+  const _ProfileHeaderBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 220,
+      child: Container(
+        decoration: const BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileAvatar extends StatelessWidget {
+  final Student student;
+  const _ProfileAvatar({required this.student});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Hero(
+        tag: 'avatar_${student.id}',
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.surface, width: 3),
+            image: DecorationImage(
+              image: NetworkImage(student.avatar),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StudentInfoCard extends StatelessWidget {
+  final Student student;
+  const _StudentInfoCard({required this.student});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.border, width: 1.5),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _InfoRow(
+              icon: Icons.person_outline,
+              label: AppStrings.labelFullName,
+              value: student.name,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.badge_outlined,
+              label: AppStrings.labelId,
+              value: student.nim,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.school_outlined,
+              label: AppStrings.labelMajor,
+              value: student.prodi,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.location_on_outlined,
+              label: AppStrings.labelDomicile,
+              value: student.domisili,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.phone_outlined,
+              label: AppStrings.labelPhone,
+              value: student.phone,
+            ),
+            const SizedBox(height: 16),
+            _InfoRow(
+              icon: Icons.email_outlined,
+              label: AppStrings.labelEmail,
+              value: student.email,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _InfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.border, width: 1),
+          ),
+          child: Icon(icon, color: AppColors.primary, size: 20),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DeleteAccountButton extends StatelessWidget {
+  final bool canDelete;
+  const _DeleteAccountButton({required this.canDelete});
 
   void _showDeleteDialog(BuildContext context) {
     showDialog(
@@ -244,11 +291,8 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                        Navigator.pop(ctx); // Tutup dialog
-                        Navigator.pop(
-                          context,
-                          true,
-                        ); // Kembali dengan flag true
+                        Navigator.pop(ctx);
+                        Navigator.pop(context, true);
                       },
                     ),
                   ),
@@ -267,7 +311,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      onPressed: () => Navigator.pop(ctx), // Batal
+                      onPressed: () => Navigator.pop(ctx),
                       child: const Text(
                         AppStrings.btnCancel,
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -283,49 +327,32 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.border, width: 1),
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: canDelete ? () => _showDeleteDialog(context) : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.negative,
+            foregroundColor: AppColors.surface,
+            disabledBackgroundColor: AppColors.disabledBackground,
+            disabledForegroundColor: AppColors.disabledText,
+            side: const BorderSide(color: AppColors.textPrimary, width: 1.5),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
-          child: Icon(icon, color: AppColors.primary, size: 20),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ],
+          icon: const Icon(Icons.delete_outline),
+          label: const Text(
+            AppStrings.btnDeleteAccount,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
-      ],
+      ),
     );
   }
 }
