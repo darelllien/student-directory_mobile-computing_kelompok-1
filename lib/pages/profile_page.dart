@@ -26,11 +26,11 @@ class ProfilePage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background, // Netral
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(AppStrings.profileTitle),
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.surface,
+        foregroundColor: AppColors.secondary,
         elevation: 0,
       ),
       body: Stack(
@@ -106,7 +106,13 @@ class ProfilePage extends StatelessWidget {
                         _buildInfoRow(
                           icon: Icons.badge_outlined,
                           label: AppStrings.labelId,
-                          value: student.id,
+                          value: student.nim,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInfoRow(
+                          icon: Icons.school_outlined,
+                          label: AppStrings.labelMajor,
+                          value: student.prodi,
                         ),
                         const SizedBox(height: 16),
                         _buildInfoRow(
@@ -119,6 +125,12 @@ class ProfilePage extends StatelessWidget {
                           icon: Icons.phone_outlined,
                           label: AppStrings.labelPhone,
                           value: student.phone,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildInfoRow(
+                          icon: Icons.email_outlined,
+                          label: AppStrings.labelEmail,
+                          value: student.email,
                         ),
                       ],
                     ),
@@ -174,10 +186,7 @@ class ProfilePage extends StatelessWidget {
       builder: (ctx) => Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(
-            color: AppColors.border,
-            width: 1.5,
-          ),
+          side: const BorderSide(color: AppColors.border, width: 1.5),
         ),
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -190,25 +199,19 @@ class ProfilePage extends StatelessWidget {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.border,
-                    width: 1.5,
-                  ),
+                  border: Border.all(color: AppColors.negative, width: 1.5),
                 ),
                 child: const Icon(
                   Icons.warning_amber_rounded,
                   size: 40,
-                  color: AppColors.textPrimary,
+                  color: AppColors.negative,
                 ),
               ),
               const SizedBox(height: 24),
               const Text(
                 AppStrings.dialogDeleteConfirm,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               const SizedBox(height: 24),
               Row(
@@ -235,7 +238,10 @@ class ProfilePage extends StatelessWidget {
                       ),
                       onPressed: () {
                         Navigator.pop(ctx); // Tutup dialog
-                        Navigator.pop(context, true); // Kembali dengan flag true
+                        Navigator.pop(
+                          context,
+                          true,
+                        ); // Kembali dengan flag true
                       },
                     ),
                   ),
@@ -283,10 +289,7 @@ class ProfilePage extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: AppColors.border,
-              width: 1,
-            ),
+            border: Border.all(color: AppColors.border, width: 1),
           ),
           child: Icon(icon, color: AppColors.primary, size: 20),
         ),
