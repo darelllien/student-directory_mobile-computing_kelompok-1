@@ -459,7 +459,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                   child: TextFormField(
                                     controller: _phoneController,
                                     keyboardType: TextInputType.number,
-                                    maxLength: 12,
+                                    maxLength: _selectedCountryCode == '+62' ? 12 : 15,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
                                     ],
