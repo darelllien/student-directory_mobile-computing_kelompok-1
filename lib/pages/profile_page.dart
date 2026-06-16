@@ -28,10 +28,14 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(AppStrings.profileTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.secondary,
+        backgroundColor: AppColors.secondary,
+        foregroundColor: AppColors.surface,
         elevation: 0,
+        centerTitle: false,
+        title: const Text(
+          AppStrings.profileTitle,
+          style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 0.5),
+        ),
       ),
       body: Stack(
         children: [
@@ -193,18 +197,21 @@ class ProfilePage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Ikon bulat di dialog
               Container(
                 width: 80,
                 height: 80,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(color: AppColors.negative, width: 1.5),
                 ),
-                child: const Icon(
-                  Icons.warning_amber_rounded,
-                  size: 40,
-                  color: AppColors.negative,
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Icon(
+                    Icons.warning_amber_rounded,
+                    size: 40,
+                    color: AppColors.negative,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
