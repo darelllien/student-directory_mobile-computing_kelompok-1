@@ -459,7 +459,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                   child: TextFormField(
                                     controller: _phoneController,
                                     keyboardType: TextInputType.number,
-                                    maxLength: 13,
+                                    maxLength: 12,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
                                     ],
