@@ -118,11 +118,17 @@ class _HomePageState extends State<HomePage> {
 
                         if (!context.mounted) return;
 
-                        if (result == true) {
-                          setState(() {
+                        _searchController.clear();
+                        FocusScope.of(context).unfocus();
+
+                        setState(() {
+                          if (result == true) {
                             _allStudents.removeWhere((s) => s.id == student.id);
-                            _filterStudents(_searchController.text);
-                          });
+                          }
+                          _filterStudents('');
+                        });
+
+                        if (result == true) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Mahasiswa berhasil dihapus')),
                           );
@@ -199,11 +205,17 @@ class _HomePageState extends State<HomePage> {
 
           if (!context.mounted) return;
 
-          if (result != null && result is Student) {
-            setState(() {
+          _searchController.clear();
+          FocusScope.of(context).unfocus();
+
+          setState(() {
+            if (result != null && result is Student) {
               _allStudents.add(result);
-              _filterStudents(_searchController.text);
-            });
+            }
+            _filterStudents('');
+          });
+
+          if (result != null && result is Student) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Mahasiswa berhasil ditambahkan')),
             );
