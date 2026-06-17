@@ -28,9 +28,11 @@ class _HomePageState extends State<HomePage> {
         _filteredStudents = List.from(_allStudents);
       } else {
         _filteredStudents = _allStudents
-            .where((student) =>
-        student.name.toLowerCase().contains(query.toLowerCase()) ||
-            student.nim.toLowerCase().contains(query.toLowerCase()))
+            .where(
+              (student) =>
+                  student.name.toLowerCase().contains(query.toLowerCase()) ||
+                  student.nim.toLowerCase().contains(query.toLowerCase()),
+            )
             .toList();
       }
     });
@@ -54,159 +56,183 @@ class _HomePageState extends State<HomePage> {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    spreadRadius: 1,
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          _searchController.clear();
+          _filterStudents('');
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      spreadRadius: 1,
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: _filterStudents,
+                  decoration: InputDecoration(
+                    labelText: 'Cari Nama atau NIM...',
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                              FocusScope.of(context).unfocus();
+                              _filterStudents('');
+                            },
+                          )
+                        : null,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: _filterStudents,
-                decoration: InputDecoration(
-                  labelText: 'Cari Nama atau NIM...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.80,
-                ),
-                itemCount: _filteredStudents.length,
-                itemBuilder: (context, index) {
-                  final student = _filteredStudents[index];
-                  return Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: () async {
-                        final result = await Navigator.pushNamed(
-                          context,
-                          '/profile',
-                          arguments: {
-                            'student': student,
-                            'totalStudents': _allStudents.length,
-                          },
-                        );
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.80,
+                  ),
+                  itemCount: _filteredStudents.length,
+                  itemBuilder: (context, index) {
+                    final student = _filteredStudents[index];
+                    return Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        onTap: () async {
+                          FocusManager.instance.primaryFocus?.unfocus();
 
-                        if (!context.mounted) return;
-
-                        _searchController.clear();
-                        FocusScope.of(context).unfocus();
-
-                        setState(() {
-                          if (result == true) {
-                            _allStudents.removeWhere((s) => s.id == student.id);
-                          }
-                          _filterStudents('');
-                        });
-
-                        if (result == true) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Mahasiswa berhasil dihapus')),
+                          final result = await Navigator.pushNamed(
+                            context,
+                            '/profile',
+                            arguments: {
+                              'student': student,
+                              'totalStudents': _allStudents.length,
+                            },
                           );
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 4.0,
+
+                          if (!context.mounted) return;
+
+                          _searchController.clear();
+
+                          setState(() {
+                            if (result == true) {
+                              _allStudents.removeWhere(
+                                (s) => s.id == student.id,
+                              );
+                            }
+                            _filterStudents('');
+                          });
+
+                          if (result == true) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Mahasiswa berhasil dihapus'),
+                              ),
+                            );
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 80,
+                                height: 80,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 4.0,
+                                  ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(student.avatar),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                image: DecorationImage(
-                                  image: NetworkImage(student.avatar),
-                                  fit: BoxFit.cover,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                student.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
                                 ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              student.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                              const SizedBox(height: 2),
+                              Text(
+                                student.nim,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF487EFD),
+                                  fontSize: 13,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              student.nim,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF487EFD),
-                                fontSize: 13,
+                              const SizedBox(height: 2),
+                              Text(
+                                student.domisili,
+                                style: TextStyle(
+                                  color: Colors.grey[700],
+                                  fontSize: 12,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              student.domisili,
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                                fontSize: 12,
-                              ),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          // Lepas fokus dari search bar SEBELUM pindah halaman
+          FocusManager.instance.primaryFocus?.unfocus();
+
           final result = await Navigator.pushNamed(context, '/add');
 
           if (!context.mounted) return;
 
           _searchController.clear();
-          FocusScope.of(context).unfocus();
 
           setState(() {
             if (result != null && result is Student) {
