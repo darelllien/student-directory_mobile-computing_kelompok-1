@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
     final Student? student = args?['student'] as Student?;
     final int totalStudents = args?['totalStudents'] as int? ?? 0;
 
-    final bool canDelete = totalStudents > 3;
+    final bool canDelete = true;
 
     if (student == null) {
       return Scaffold(
@@ -27,7 +27,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.secondary,
+        backgroundColor: AppColors.primary,
         foregroundColor: AppColors.surface,
         elevation: 0,
         centerTitle: false,
@@ -78,7 +78,7 @@ class _ProfileHeaderBackground extends StatelessWidget {
       height: 220,
       child: Container(
         decoration: const BoxDecoration(
-          color: AppColors.primary,
+          color: AppColors.secondary,
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
         ),
       ),
