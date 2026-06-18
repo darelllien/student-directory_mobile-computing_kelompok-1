@@ -372,8 +372,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                           _buildFieldLabel('Nomer Handphone', true),
                           InputDecorator(
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 4,
+                              contentPadding: EdgeInsets.all(0
                               ),
                               filled: false,
                               errorText: _phoneErrorText,
@@ -407,9 +406,10 @@ class _AddStudentPageState extends State<AddStudentPage> {
                               ),
                             ),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 DropdownButtonHideUnderline(
+                                  child: SizedBox(height: 48,
                                   child: DropdownButton<String>(
                                     value: _selectedCountryCode,
                                     icon: const Icon(
@@ -440,6 +440,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                         });
                                       }
                                     },
+                                  ),
                                   ),
                                 ),
                                 const Padding(
@@ -474,7 +475,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                         fontSize: 14,
                                       ),
                                       contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10,
+                                        vertical: 13,
                                       ),
                                       border: InputBorder.none,
                                       enabledBorder: InputBorder.none,
