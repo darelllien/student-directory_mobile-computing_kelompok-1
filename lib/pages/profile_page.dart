@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
     final Student? student = args?['student'] as Student?;
     final int totalStudents = args?['totalStudents'] as int? ?? 0;
 
-    final bool canDelete = true;
+    final bool canDelete = totalStudents > 3;
 
     if (student == null) {
       return Scaffold(
