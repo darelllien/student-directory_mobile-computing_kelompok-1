@@ -168,8 +168,8 @@ class _HomePageState extends State<HomePage> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Colors.black,
-                                    width: 4.0,
+                                    color: Theme.of(context).colorScheme.primary,
+                                    width: 2.0,
                                   ),
                                   image: DecorationImage(
                                     image: NetworkImage(student.avatar),
@@ -225,7 +225,6 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // Lepas fokus dari search bar SEBELUM pindah halaman
           FocusManager.instance.primaryFocus?.unfocus();
 
           final result = await Navigator.pushNamed(context, '/add');

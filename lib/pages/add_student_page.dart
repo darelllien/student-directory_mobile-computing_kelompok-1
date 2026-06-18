@@ -164,7 +164,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   child: Container(
                     width: 116,
                     height: 116,
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.primary, width: 3),
@@ -407,7 +407,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                               ),
                             ),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
