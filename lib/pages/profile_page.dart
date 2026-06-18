@@ -42,7 +42,7 @@ class ProfilePage extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 _ProfileAvatar(student: student),
                 const SizedBox(height: 12),
                 Text(
@@ -52,9 +52,9 @@ class ProfilePage extends StatelessWidget {
                     color: AppColors.surface,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 _StudentInfoCard(student: student),
-                const SizedBox(height: 24),
+                const SizedBox(height: 18),
                 _DeleteAccountButton(canDelete: canDelete),
                 const SizedBox(height: 32),
               ],
@@ -101,7 +101,7 @@ class _ProfileAvatar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey.shade300,
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.surface, width: 3),
+            border: Border.all(color: AppColors.primary, width: 2),
             image: DecorationImage(
               image: NetworkImage(student.avatar),
               fit: BoxFit.cover,
@@ -125,7 +125,7 @@ class _StudentInfoCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border, width: 1.5),
+          border: Border.all(color: AppColors.primary, width:1),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -193,7 +193,7 @@ class _InfoRow extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.border, width: 1),
+            border: Border.all(color: AppColors.primary, width: 1),
           ),
           child: Icon(icon, color: AppColors.primary, size: 20),
         ),
@@ -206,7 +206,7 @@ class _InfoRow extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppColors.textPrimary,
+                  color: AppColors.primary,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -340,7 +340,7 @@ class _DeleteAccountButton extends StatelessWidget {
             foregroundColor: AppColors.surface,
             disabledBackgroundColor: AppColors.disabledBackground,
             disabledForegroundColor: AppColors.disabledText,
-            side: const BorderSide(color: AppColors.textPrimary, width: 1.5),
+            side: const BorderSide(color: AppColors.negative, width: 1),
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
