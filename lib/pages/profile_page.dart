@@ -9,7 +9,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final Student? student = args?['student'] as Student?;
     final int totalStudents = args?['totalStudents'] as int? ?? 0;
 
@@ -125,7 +125,7 @@ class _StudentInfoCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.primary, width:1),
+          border: Border.all(color: AppColors.primary, width: 1),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -235,92 +235,95 @@ class _DeleteAccountButton extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.border, width: 1.5),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.negative, width: 1.5),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  child: Icon(
-                    Icons.warning_amber_rounded,
-                    size: 40,
-                    color: AppColors.negative,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                AppStrings.dialogDeleteConfirm,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.negative,
-                        foregroundColor: AppColors.surface,
-                        side: const BorderSide(
-                          color: AppColors.border,
-                          width: 1.5,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      icon: const Icon(Icons.delete, size: 18),
-                      label: const Text(
-                        AppStrings.btnDelete,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                        Navigator.pop(context, true);
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.surface,
-                        foregroundColor: AppColors.textPrimary,
-                        side: const BorderSide(
-                          color: AppColors.border,
-                          width: 1.5,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onPressed: () => Navigator.pop(ctx),
-                      child: const Text(
-                        AppStrings.btnCancel,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.negative, width: 1.5),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.warning_amber_rounded,
+                      size: 40,
+                      color: AppColors.negative,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  AppStrings.dialogDeleteConfirm,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.negative,
+                          foregroundColor: AppColors.surface,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        icon: const Icon(Icons.delete, size: 18),
+                        label: const Text(
+                          AppStrings.btnDelete,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          Navigator.pop(context, true);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.surface,
+                          foregroundColor: AppColors.textPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onPressed: () => Navigator.pop(ctx),
+                        child: const Text(
+                          AppStrings.btnCancel,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
