@@ -343,7 +343,6 @@ class _DeleteAccountButton extends StatelessWidget {
             foregroundColor: AppColors.surface,
             disabledBackgroundColor: AppColors.disabledBackground,
             disabledForegroundColor: AppColors.disabledText,
-            side: const BorderSide(color: AppColors.negative, width: 1),
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

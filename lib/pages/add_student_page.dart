@@ -52,7 +52,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
             fontSize: 14,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
-            fontFamily: 'Roboto',
           ),
           children: isRequired
               ? const [
@@ -285,7 +284,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                 setState(() => _selectedProdi = value),
                             style: const TextStyle(
                               color: AppColors.textPrimary,
-                              fontFamily: 'Roboto',
                             ),
                             isDense: true,
                             decoration:
@@ -321,7 +319,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
                       setState(() => _selectedDomisili = value),
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontFamily: 'Roboto',
                   ),
                   decoration: buildUnderlineDecoration(
                     hintText: 'Pilih Domisili',
@@ -421,7 +418,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                       color: AppColors.textPrimary,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 15,
-                                      fontFamily: 'Roboto',
                                     ),
                                     alignment: Alignment.center,
                                     items: countryCodesMap.keys.map((code) {
@@ -496,7 +492,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                                       } else {
                                         String cleanPhone = value.trim();
                                         if (cleanPhone.length < 9 ||
-                                            cleanPhone.length > 12) {
+                                            cleanPhone.length > 13) {
                                           errorMessage =
                                               'Nomor HP tidak valid!';
                                         }
