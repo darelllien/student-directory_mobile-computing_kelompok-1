@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                       borderSide: BorderSide.none,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: Colors.white70,
                   ),
                 ),
               ),
